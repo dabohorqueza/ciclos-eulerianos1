@@ -25,21 +25,54 @@ void draw() {
             TableRow row1 = Gen.getRow(i);
             TableRow row2 = Gen.getRow(j);
       line(row1.getInt("xposition"),row1.getInt("yposition"),row2.getInt("xposition"),row2.getInt("yposition"));
+      textSize(16);
+      text("R",95,506);
+      textSize(14);
+      text("Solve",483,504);
         }
       }
     }
   } else if (key == '2') {
     background (50);
-    conn =loadTable("lvl1con.csv");
+    conn =loadTable("lvl2con.csv");
     Gen =loadTable("level2coordinates.csv", "header");
     Genlvl = new Level (Gen);
     Genlvl.create();
-  } else if (key =='3') {
-    conn =loadTable("lvl1con.csv");
+     for (int i = 0; i < conn.getRowCount(); i++) {
+      for (int j=0; j< conn.getRowCount(); j++) {
+        if (conn.getInt(i, j)==1) {
+            TableRow row1 = Gen.getRow(i);
+            TableRow row2 = Gen.getRow(j);
+      line(row1.getInt("xposition"),row1.getInt("yposition"),row2.getInt("xposition"),row2.getInt("yposition"));
+        }
+      }
+    }
+          textSize(16);
+      text("R",95,506);
+      textSize(14);
+      text("Solve",483,504);
+  }
+  else if (key =='3') {
+    background (50);
+    conn =loadTable("lvl3con.csv");
     Gen =loadTable("level3coordinates.csv", "header");
     Genlvl = new Level (Gen);
     Genlvl.create();
-  } else {
+     for (int i = 0; i < conn.getRowCount(); i++) {
+      for (int j=0; j< conn.getRowCount(); j++) {
+        if (conn.getInt(i, j)==1) {
+            TableRow row1 = Gen.getRow(i);
+            TableRow row2 = Gen.getRow(j);
+      line(row1.getInt("xposition"),row1.getInt("yposition"),row2.getInt("xposition"),row2.getInt("yposition"));
+        }
+      }
+    }
+          textSize(16);
+      text("R",95,506);
+      textSize(14);
+      text("Solve",483,504);
+  }
+   else {
     textSize(24);
     fill(random(999), random(999), random(999));
     text("level1 PRESS 1", 30, 300);
@@ -75,6 +108,17 @@ void mouseClicked() {
     }
     break;
   case '2':
+    for (int j = 0; j<Gen.getRowCount(); j++) {
+      if ( nodes[j].check()) {
+        connections.append(j);
+      }
+    }
+    if (restart.check()) {
+      connections.clear();
+    }
+    break;
+    case '3':
+    
     for (int j = 0; j<Gen.getRowCount(); j++) {
       if ( nodes[j].check()) {
         connections.append(j);

@@ -9,8 +9,8 @@ class Line {
   }
   void connect() {
     pushStyle();
-    strokeWeight(20);
-    stroke(255, 0, 255);
+    strokeWeight(10);
+    stroke(255, random (0,500), 255);
     line(origin().position().x, origin().position().y, end().position().x, end().position().y);
     popStyle();
   }
