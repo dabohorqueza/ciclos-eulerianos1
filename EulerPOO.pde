@@ -1,82 +1,88 @@
 Level Genlvl;
 Node[] nodes;
 Line[] lines; 
+Line [] solution;
 Table Gen;
-//Table connn; si aparece un problema de compilación por no declarar estas variables
+Table conn;
 IntList connections;
+Node restart;
+Node solve;
 void setup() {
   size (600, 600);
   connections = new IntList();
 }
 void draw() {
-  switch  (key) {
-  case '1':
-    Table conn =loadTable("lvl1con.csv");
-    Table Gen =loadTable("level1coordinates.csv", "header");
+
+  if (key == '1') {
+    background (50);
+    conn =loadTable("lvl1con.csv");
+    Gen =loadTable("level1coordinates.csv", "header");
     Genlvl = new Level (Gen);
-    background (0);
     Genlvl.create();
-    //if (mousePressed == true){
-    print(connections);
-    if (connections.size()>1) {
-      lines = new Line[connections.size()];
-      for (int j=1; j<=connections.size(); j++) {    
-        lines[j-1] = new Line(nodes[j-1], nodes[j]);
-        if ( conn.getInt(connections.get(j), connections.get(j-1))==1); 
-        {
-          lines[j-1].connect();
+    for (int i = 0; i < conn.getRowCount(); i++) {
+      for (int j=0; j< conn.getRowCount(); j++) {
+        if (conn.getInt(i, j)==1) {
+            TableRow row1 = Gen.getRow(i);
+            TableRow row2 = Gen.getRow(j);
+      line(row1.getInt("xposition"),row1.getInt("yposition"),row2.getInt("xposition"),row2.getInt("yposition"));
         }
       }
     }
-    break;
-    //case '2':
-    //  Table LVL2=loadTable ("level2coordinates.csv", "header");
-    //  Genlvl = new Level (LVL2);
-    //  background (0);
-    //  Genlvl.create();
-    //  if (mousePressed == true) {
-    //    for (int j = 0; j<LVL2.getRowCount(); j++) {
-    //      if ( nodes[j].check()) {
-    //        lines= new Line(nodes [j]);
-    //      }
-    //    }
-    //  }
-    //  break;
-    //case '3':
-    //  Table LVL3= loadTable("level3coordinates.csv", "header");
-    //  Genlvl= new Level (LVL3);
-    //  background (0);
-    //  Genlvl.create();
-
-    //  //    if (mousePressed == true) {
-
-    //  //}
-    //  break;
-  default:
-    fill(34, 432, 21);
-    rect(0, 0, width/3, height);
-    fill(344, 42, 213);
-    rect(width/3, 0, 2*width/3, height);
-    fill(12, 432, 213);
-    rect(2*width/3, 0, width, height);
-    textSize(32);
+  } else if (key == '2') {
+    background (50);
+    conn =loadTable("lvl1con.csv");
+    Gen =loadTable("level2coordinates.csv", "header");
+    Genlvl = new Level (Gen);
+    Genlvl.create();
+  } else if (key =='3') {
+    conn =loadTable("lvl1con.csv");
+    Gen =loadTable("level3coordinates.csv", "header");
+    Genlvl = new Level (Gen);
+    Genlvl.create();
+  } else {
+    textSize(24);
     fill(random(999), random(999), random(999));
-    text("level1", 50, 300);
+    text("level1 PRESS 1", 30, 300);
     fill(random(999), random(999), random(999));
-    text("level2", 250, 300);
+    text("level2 PRESS 2", 230, 300);
     fill(random(999), random(999), random(999));
-    text("level3", 450, 300);
-    break;
+    text("level3 PRESS 3", 420, 300);
+  }
+  if (connections.size()>=2 /**esto depende de cada nivel**/) {
+    lines = new Line[connections.size()-1];
+    for (int j=1; j<connections.size(); j++) {    
+      if  (conn.getInt(connections.get(connections.size()-1), connections.get(connections.size()-2))==1) {
+        lines[j-1] = new Line(nodes[connections.get(j)], nodes[connections.get(j-1)]);
+        lines[j-1].connect();
+        conn.setInt(connections.get(j-1), connections.get(j), 0);
+        conn.setInt(connections.get(j), connections.get(j-1), 0);
+      } else { 
+        connections.remove(connections.size()-1);
+      }
+    }
   }
 }
-void mouseClicked() { 
-  if (key=='1'/**|| key=='2' || key=='3'*/) {
-    Table Gen =loadTable("level1coordinates.csv", "header");
-    print (connections);
+void mouseClicked() {
+  switch (key) {
+  case '1':
     for (int j = 0; j<Gen.getRowCount(); j++) {
       if ( nodes[j].check()) {
         connections.append(j);
       }
     }
+    if (restart.check()) {
+      connections.clear();
+    }
+    break;
+  case '2':
+    for (int j = 0; j<Gen.getRowCount(); j++) {
+      if ( nodes[j].check()) {
+        connections.append(j);
+      }
+    }
+    if (restart.check()) {
+      connections.clear();
+    }
+    break;
   }
 }
