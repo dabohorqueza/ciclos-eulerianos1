@@ -7,6 +7,11 @@ Table conn;
 IntList connections;
 Node restart;
 Node solve;
+//  import processing.serial.*;
+//create an int Array with the order of the nodes
+//made a for that draws each line taking to account the int array for each level
+//assing a delay () between the each of the for steps 
+
 void setup() {
   size (600, 600);
   connections = new IntList();
@@ -106,6 +111,9 @@ void mouseClicked() {
     if (restart.check()) {
       connections.clear();
     }
+    if (solve.check()){
+    connections.clear();
+  }
     break;
   case '2':
     for (int j = 0; j<Gen.getRowCount(); j++) {
