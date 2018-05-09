@@ -18,9 +18,5 @@ Level (Table  lvl) {
     R=new PVector (100,500);
     restart =new Node (R,mouseX,mouseY,50);
     restart.display();
-    PVector S;
-    S=new PVector (500,500);
-    solve =new Node (S,mouseX,mouseY,50);
-    solve.display();
   }
 }
